@@ -34,13 +34,20 @@ class MainWindow(Ui_MainWindow, QMainWindow):
     def get_start(self):
         try:
             url = self.lineEdit.text()  # 从GUI界面获取输入url
-            self.access_thread_object = AccessThread(url)
-            self.access_thread_object.start()
-            self.pushButtonStart.setEnabled(False)  # 开始爬取后执行按钮禁用
-            self.textEdit.clear()
-            self.textEdit.append("start")
-            self.textEdit.append("开始获取数据……")
-            self.access_thread_object.update_signal.connect(self.update_ui)
+            if url:
+                domainName = url.split("https://")[-1].split(".com")[0]
+                if domainName == "www.douyin" or domainName == "space.bilibili":
+                    self.access_thread_object = AccessThread(url)
+                    self.access_thread_object.start()
+                    self.pushButtonStart.setEnabled(False)  # 开始爬取后执行按钮禁用
+                    self.textEdit.clear()
+                    self.textEdit.append("start")
+                    self.textEdit.append("开始获取数据……")
+                    self.access_thread_object.update_signal.connect(self.update_ui)
+                else:
+                    QMessageBox.warning(self, "Warning", "暂不支持除抖音与B站之外的网站链接", QMessageBox.Cancel)
+            else:
+                QMessageBox.warning(self, "Warning", "链接不可为空", QMessageBox.Cancel)
         except Exception as e:
             error_line = e.__traceback__.tb_lineno
             error_info = '第{error_line}行发生error为: {e}'.format(error_line=error_line, e=str(e))
