@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDesktopWidget, QMessageBox
-from accessThread import AccessThread
+from subModule.accessThread import AccessThread
 from badMouseUI import Ui_MainWindow
 from PyQt5.QtGui import QIcon
 import selfQtools
