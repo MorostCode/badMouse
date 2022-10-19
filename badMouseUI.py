@@ -40,4 +40,4 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "链接:"))
-        self.pushButtonStart.setText(_translate("MainWindow", "开爬"))
+        self.pushButtonStart.setText(_translate("MainWindow", "执行"))

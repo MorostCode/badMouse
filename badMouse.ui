@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>开杀</string>
+     <string>执行</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
