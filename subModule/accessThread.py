@@ -5,6 +5,7 @@ import datetime
 import math
 import json
 import os
+import re
 
 
 class AccessThread(QThread):
@@ -26,12 +27,12 @@ class AccessThread(QThread):
             # 判断域名
             domainName = self.url.split("https://")[-1].split(".com")[0]
             if domainName == "www.douyin":
-                uid = self.url.split("user/")[-1].split("?vid")[0]  # 获取用户id
+                uid = re.search("\d+$", self.url).group()  # 正则匹配获取用户id
                 api_url = "https://www.iesdouyin.com/web/api/v2/aweme/post/?sec_uid=" + uid + "&count=21&max_cursor=0&aid=1128&_signature=R6Ub1QAAJ-gQklOOeJfpTEelG8&dytk="
                 self.access_dy(api_url)
                 self.name = None  # 每次爬取后重置命名
             elif domainName == "space.bilibili":
-                uid = self.url.split("space.bilibili.com/")[-1].split("/")[0]  # 获取用户id
+                uid = re.search("\d+", self.url).group()  # 正则匹配获取用户id
                 api_url = "https://api.bilibili.com/x/space/arc/search?mid=" + uid + "&ps=30&tid=0&pn=1&keyword=&order=pubdate&order_avoided=true&jsonp=jsonp"
                 self.access_bili(api_url)
                 self.name = None  # 每次爬取后重置命名
