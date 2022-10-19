@@ -16,7 +16,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)  # 加载Ui
         self.setFixedSize(640, 160)
-        self.setWindowTitle("badMouse_v1.0")
+        self.setWindowTitle("badMouse_v1.1")
         self.setWindowIcon(QIcon(selfQtools.base642pixmap(iconBytes)))
         selfSize = self.geometry()
         screenSize = QDesktopWidget().screenGeometry()
@@ -39,7 +39,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             self.pushButtonStart.setEnabled(False)  # 开始爬取后执行按钮禁用
             self.textEdit.clear()
             self.textEdit.append("start")
-            self.textEdit.append("开始爬取数据……")
+            self.textEdit.append("开始获取数据……")
             self.access_thread_object.update_signal.connect(self.update_ui)
         except Exception as e:
             error_line = e.__traceback__.tb_lineno
@@ -52,7 +52,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             self.textEdit.append("end")
             self.textEdit.append("总计{}条数据".format(count))
             time.sleep(1)
-            QMessageBox.information(self, "爬完了", "数据已保存至本地", QMessageBox.Yes)
+            QMessageBox.information(self, "获取完毕", "数据已保存至本地", QMessageBox.Yes)
             self.textEdit.clear()
             self.lineEdit.clear()
             self.pushButtonStart.setEnabled(True)
@@ -63,7 +63,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
     # 关闭窗口时弹出确认消息
     def closeEvent(self, event):
-        replyA = QMessageBox.question(self, '?', '不爬了？', QMessageBox.Yes, QMessageBox.No)
+        replyA = QMessageBox.question(self, '?', '确认退出？', QMessageBox.Yes, QMessageBox.No)
         if replyA == QMessageBox.Yes:  # 接收到确认关闭信号之后关闭窗口
             event.accept()
         else:
