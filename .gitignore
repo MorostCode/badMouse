@@ -1,0 +1,14 @@
+.DS_Store
+.idea
+__pycache__
+oldVersion
+staticFile
+build
+dist
+log
+*.enc
+*.bat
+*.spec
+*.zip
+*.7z
+*.rar
