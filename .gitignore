@@ -6,10 +6,10 @@ staticFile
 build
 dist
 log
+testFile.py
 *.enc
 *.bat
 *.spec
 *.zip
 *.7z
 *.rar
-test.py
