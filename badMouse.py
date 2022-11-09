@@ -16,7 +16,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)  # 加载Ui
         self.setFixedSize(640, 160)
-        self.setWindowTitle("badMouse_v1.2")
+        self.setWindowTitle("badMouse_v1.3")
         self.setWindowIcon(QIcon(selfQtools.base642pixmap(iconBytes)))
         selfSize = self.geometry()
         screenSize = QDesktopWidget().screenGeometry()

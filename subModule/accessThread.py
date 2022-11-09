@@ -23,18 +23,25 @@ class AccessThread(QThread):
             }
 
     def run(self):
-        # 判断域名
-        domainName = self.url.split("https://")[-1].split(".com")[0]
-        if domainName == "www.douyin":
-            uid = re.search("\d+$", self.url).group()  # 正则匹配获取用户id
-            api_url = "https://www.iesdouyin.com/web/api/v2/aweme/post/?sec_uid=" + uid + "&count=21&max_cursor=0&aid=1128&_signature=R6Ub1QAAJ-gQklOOeJfpTEelG8&dytk="
-            self.access_dy(api_url)
-            self.name = None  # 每次爬取后重置命名
-        elif domainName == "space.bilibili":
-            uid = re.search("\d+", self.url).group()  # 正则匹配获取用户id
-            api_url = "https://api.bilibili.com/x/space/arc/search?mid=" + uid + "&ps=30&tid=0&pn=1&keyword=&order=pubdate&order_avoided=true&jsonp=jsonp"
-            self.access_bili(api_url)
-            self.name = None  # 每次爬取后重置命名
+        try:
+            # 判断域名
+            domainName = self.url.split("https://")[-1].split(".com")[0]
+            if domainName == "www.douyin":
+                sec_user_id = parse.urlparse(self.url).path.split("user/")[-1]
+                api_url = "https://www.douyin.com/aweme/v1/web/aweme/post/?device_platform=webapp&aid=6383&sec_user_id=" + sec_user_id + "&max_cursor=0"
+                print("111")
+                self.access_dy(api_url)
+                self.name = None  # 每次爬取后重置命名
+
+            elif domainName == "space.bilibili":
+                uid = re.search("\d+", self.url).group()  # 正则匹配获取用户id
+                api_url = "https://api.bilibili.com/x/space/arc/search?mid=" + uid + "&ps=30&tid=0&pn=1&keyword=&order=pubdate&order_avoided=true&jsonp=jsonp"
+                self.access_bili(api_url)
+                self.name = None  # 每次爬取后重置命名
+        except Exception as e:
+            error_line = e.__traceback__.tb_lineno
+            error_info = '第{error_line}行发生error为: {e}'.format(error_line=error_line, e=str(e))
+            print(error_info)
 
     # 访问抖音api获取Url列表
     def access_dy(self, url):
@@ -50,8 +57,11 @@ class AccessThread(QThread):
                 bits[4] = parse.urlencode(qs, True)
                 url = parse.urlunparse(bits)
                 # 请求接口，解析结果
-                r = requests.get(url=url, headers=self.headers, stream=True)
+                headers = self.headers
+                headers['referer'] = self.url
+                r = requests.get(url=url, headers=headers, stream=True)
                 data_json = json.loads(r.text)
+                print(data_json)
                 if len(data_json['aweme_list']) == 0:
                     break
                 # 获取用户名称，以此命名txt文件
